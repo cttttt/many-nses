@@ -1,0 +1,45 @@
+version: "3.7"
+
+services:
+  ns-root:
+    build: ns
+    networks:
+      vpcbr:
+        ipv4_address: 10.5.0.2
+    volumes:
+      - "./ns-root/etc/bind:/etc/bind"
+  ns3:
+    build: ns
+    networks:
+      vpcbr:
+        ipv4_address: 10.5.0.3
+    volumes:
+      - "./ns3/etc/bind:/etc/bind"
+  ns4:
+    build: ns
+    networks:
+      vpcbr:
+        ipv4_address: 10.5.0.4
+    volumes:
+      - "./ns4/etc/bind:/etc/bind"
+  ns5:
+    build: ns
+    networks:
+      vpcbr:
+        ipv4_address: 10.5.0.5
+    volumes:
+      - "./ns5/etc/bind:/etc/bind"
+  recursor:
+    build: ns
+    networks:
+      vpcbr:
+        ipv4_address: 10.5.0.6
+    volumes:
+      - "./recursor/etc/bind:/etc/bind"
+
+networks:
+  vpcbr:
+    driver: bridge
+    ipam:
+     config:
+       - subnet: 10.5.0.0/16

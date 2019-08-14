@@ -1,0 +1,13 @@
+;
+; BIND data file for local loopback interface
+;
+$TTL	604800
+@	IN	SOA	ns5.domain.com.  root.ns5.domain.com. (
+			      2		; Serial
+			 604800		; Refresh
+			  86400		; Retry
+			2419200		; Expire
+			 604800 )	; Negative Cache TTL
+; name servers
+    IN      NS      ns5.domain.com.
+    IN      TXT     ns5

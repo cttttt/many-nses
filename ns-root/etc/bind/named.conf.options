@@ -1,0 +1,10 @@
+options {
+	directory "/var/cache/bind";
+
+        recursion no;
+        listen-on { 10.5.0.2; };
+        listen-on-v6 { none; };
+        allow-transfer { none; };
+        allow-query { any; };
+	auth-nxdomain no;
+};

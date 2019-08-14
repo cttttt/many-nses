@@ -1,0 +1,41 @@
+#!/bin/bash
+
+zone_name_from_filename () {
+  echo ${1/*db./}
+}
+
+check_forward_zone_file () {
+  zone=$(zone_name_from_filename "$1")
+
+  if [[ $zone == root ]]; then
+    # The root zone is special
+    return 0
+  fi
+
+  named-checkzone "$zone" "$f"
+}
+
+check_reverse_zone_file () {
+  zone=$(zone_name_from_filename "$1")
+  named-checkzone "$zone.in-addr.arpa" "$f"
+}
+
+main () {
+  if ! named-checkconf; then
+    echo "bad bind config" >&2
+    return 1
+  fi
+
+  for f in /etc/bind/db.[a-z]*; do \
+    check_forward_zone_file "$f" || return "$?"
+  done
+
+  for f in /etc/bind/db.[0-9]*; do \
+    check_reverse_zone_file "$f" || return "$?"
+  done
+
+  exec /usr/sbin/named -g -4 -u bind
+}
+
+main "$@"
+
